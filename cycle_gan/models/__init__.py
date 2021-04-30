@@ -17,9 +17,8 @@ In the function <__init__>, you need to define four lists:
 Now you can use the model class by specifying flag '--model dummy'.
 See our template model class 'template_model.py' for more details.
 """
-
 import importlib
-from models.base_model import BaseModel
+from .base_model import BaseModel
 
 
 def find_model_using_name(model_name):

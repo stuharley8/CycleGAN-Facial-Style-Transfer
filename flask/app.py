@@ -1,10 +1,13 @@
 import os
-from .. import CycleGAN
 from flask import Flask, render_template
 from flask_uploads import UploadSet, configure_uploads, IMAGES, patch_request_class
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import SubmitField
+
+from packages.cyclegan import CycleGAN
+from packages.face_detection import FaceDetector
+from packages.image_util import image_util
 
 # python -m flask run
 # based on - https://gist.github.com/greyli/81d7e5ae6c9baf7f6cdfbf64e8a7c037
@@ -39,8 +42,8 @@ def upload_file():
         out_url = str(file_url).replace(filename, out_fname_full)
 
         # Detect face
-        faceDetector = fd.FaceDetector('model/deploy.prototxt.txt', 'model/opencv_face_detector.caffemodel')
-        fd.export_image_to_file('uploads/' + out_fname, faceDetector.detect_face_from_image(filename))
+        faceDetector = FaceDetector.FaceDetector('model/deploy.prototxt.txt', 'model/opencv_face_detector.caffemodel')
+        image_util.export_image_to_file('uploads/' + out_fname, faceDetector.detect_face_from_image(filename))
     else:
         file_url = None
         out_url = None

@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import os
 
 class FaceDetector:
     def __init__(self, model_path="./model/model.txt", weights_path="./model/weights.caffemodel"):
@@ -7,7 +8,6 @@ class FaceDetector:
 
     def detect_face_from_image(self, image_path, confidence_threshold=0.7):
         image = cv2.imread(image_path)
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
         (h, w) = image.shape[:2]
         blob = cv2.dnn.blobFromImage(cv2.resize(image, (300, 300)), 1.0,
@@ -21,7 +21,7 @@ class FaceDetector:
         detections = detections[0, 0, confidences > confidence_threshold, 0:7]
 
         if detections.size == 0:
-            return
+            return image
 
         # get the size of each box as the sum of two sides of the rectangle
         num_detections = detections.shape[0]

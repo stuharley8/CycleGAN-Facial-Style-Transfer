@@ -32,7 +32,6 @@ def image_to_cycleGAN_data(image):
     return data
 
 if __name__ == '__main__':
-
     monet = cycle_gan_model('style_monet_pretrained')
     monet_style = []
     vangogh = cycle_gan_model('style_vangogh_pretrained')

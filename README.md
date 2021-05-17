@@ -28,13 +28,15 @@ Docker images of this project are publicly hosted on Docker Hub. You can access 
 **CPU Version**
 ```
 docker pull nathandupon/dw-gan:cpu
+docker run -p 5000:5000 --name dw-gan nathandupon/dw-gan:cpu
 ```
 
 **GPU Version**
 ```
 docker pull nathandupon/dw-gan:gpu
+docker run -p 5000:5000 --name dw-gan nathandupon/dw-gan:gpu
 ```
-***Note***: This version requires hardware capable of running CUDA with NVIDIA drivers. If you are unsure if your hardware can run this image, please view the [CUDA base image](https://hub.docker.com/r/nvidia/cuda) for more information.
+***Note***: This version requires hardware capable of running CUDA with NVIDIA drivers, and nvidia-docker running on the host. If you are unsure if your hardware can run this image, please view the [CUDA base image](https://hub.docker.com/r/nvidia/cuda) for more information. Reference the [NVIDIA documentation](https://docs.nvidia.com/cuda/wsl-user-guide/index.html#installing-nvidia-drivers) for information on WSL support.
 
 <br><br>
 

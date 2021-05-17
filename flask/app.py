@@ -1,5 +1,7 @@
 import os
 import datetime
+from argparse import ArgumentParser
+
 from flask import Flask, render_template
 from flask_uploads import UploadSet, configure_uploads, IMAGES, patch_request_class
 from flask_wtf import FlaskForm
@@ -59,8 +61,8 @@ def upload_file():
         face_selection = faceDetector.detect_face_from_image(pkg_file_path)
 
         # Produce the output images from the models
-        vangogh_model.set_model_input(face_selection)
-        produced_visuals = vangogh_model.run_inference()
+        ukiyoe_model.set_model_input(face_selection)
+        produced_visuals = ukiyoe_model.run_inference()
 
         # Save the output image
         np_img = tensor2im(produced_visuals['fake'])
@@ -72,4 +74,14 @@ def upload_file():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    parser = ArgumentParser()
+    parser.add_argument('--containerize_build', required=False, type=int, default=0)
+    parser.add_argument('--gpu_ids', type=str, default='-1', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
+
+    args = parser.parse_args()
+    containerize_build = args.containerize_build
+    
+    if containerize_build == 1:
+        app.run(host='0.0.0.0')
+    else:
+        app.run()

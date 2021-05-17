@@ -1,0 +1,40 @@
+FROM nvidia/cuda:11.3.0-base-ubuntu18.04
+
+# Expose the port for the application
+EXPOSE 5000
+
+# Install git and other needed packages
+RUN apt-get update 
+RUN apt-get install -y git wget
+
+# Install Anaconda
+RUN wget https://repo.anaconda.com/archive/Anaconda3-2021.05-Linux-x86_64.sh
+RUN bash Anaconda3-2021.05-Linux-x86_64.sh -b
+RUN rm Anaconda3-2021.05-Linux-x86_64.sh
+
+# Install NVIDIA Drivers
+RUN wget https://us.download.nvidia.com/XFree86/Linux-x86_64/460.80/NVIDIA-Linux-x86_64-460.80.run
+RUN bash NVIDIA-Linux-x86_64-460.80.run
+RUN rm NVIDIA-Linux-x86_64-460.80.run
+
+# Set path to conda
+ENV PATH /root/anaconda3/bin:$PATH
+
+# Create the conda environment
+COPY environment-linux.yml /CycleGAN-Server/environment-linux.yml
+RUN conda env create -f /CycleGAN-Server/environment-linux.yml
+
+# Make RUN commands use the new environment:
+SHELL ["conda", "run", "-n", "dw-gan", "/bin/bash", "-c"]
+
+# Copy the project directory into the project
+COPY flask /CycleGAN-Server/flask
+
+# Install local pip packages
+RUN cd /CycleGAN-Server/flask/packages/cyclegan && pip install -e .
+
+# Configure the working directory of the container
+WORKDIR /CycleGAN-Server/flask
+
+# Start the application in the conda environment
+ENTRYPOINT [ "conda", "run", "--no-capture-output", "-n", "dw-gan", "python", "./app.py", "--containerize_build", "1", "--gpu_ids", "0" ]

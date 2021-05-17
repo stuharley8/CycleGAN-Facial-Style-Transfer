@@ -1,0 +1,27 @@
+FROM continuumio/anaconda3
+
+# Expose the port for the application
+EXPOSE 5000
+
+# Install git and other needed packages
+RUN apt-get update 
+RUN apt-get install -y git
+
+# Create the conda environment
+COPY environment-linux.yml /CycleGAN-Server/environment-linux.yml
+RUN conda env create -f /CycleGAN-Server/environment-linux.yml
+
+# Make RUN commands use the new environment:
+SHELL ["conda", "run", "-n", "dw-gan", "/bin/bash", "-c"]
+
+# Copy the project directory into the project
+COPY flask /CycleGAN-Server/flask
+
+# Install local pip packages
+RUN cd /CycleGAN-Server/flask/packages/cyclegan && pip install -e .
+
+# Configure the working directory of the container
+WORKDIR /CycleGAN-Server/flask
+
+# Start the application in the conda environment
+ENTRYPOINT [ "conda", "run", "--no-capture-output", "-n", "dw-gan", "python", "./app.py", "--containerize_build", "1" ]

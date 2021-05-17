@@ -76,7 +76,8 @@ def upload_file():
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument('--containerize_build', required=False, type=int, default=0)
-    
+    parser.add_argument('--gpu_ids', type=str, default='-1', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
+
     args = parser.parse_args()
     containerize_build = args.containerize_build
     

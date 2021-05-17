@@ -3,6 +3,9 @@
 *.png
 *.gif
 
+# User includes
+!dw-gan-prod-architecture.png
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

@@ -17,7 +17,7 @@ This project has been created with the intention of being packaged within a Dock
 
 This image can then be obtained with the target exhibit through pulling the latest image (or any other desired tagged image), and running the container to start the application.
 
-![Production Architecture for Application Deployment](./imgs/dw-gan-prod-architecture.png)
+![Production Architecture for Application Deployment](./resources/dw-gan-prod-architecture.png)
 
 <br><br>
 

@@ -1,5 +1,7 @@
 import os
 import datetime
+from argparse import ArgumentParser
+
 from flask import Flask, render_template
 from flask_uploads import UploadSet, configure_uploads, IMAGES, patch_request_class
 from flask_wtf import FlaskForm
@@ -72,4 +74,13 @@ def upload_file():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    parser = ArgumentParser()
+    parser.add_argument('--containerize_build', required=False, type=int, default=0)
+    
+    args = parser.parse_args()
+    containerize_build = args.containerize_build
+    
+    if containerize_build == 1:
+        app.run(host='0.0.0.0')
+    else:
+        app.run()

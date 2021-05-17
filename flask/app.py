@@ -59,8 +59,8 @@ def upload_file():
         face_selection = faceDetector.detect_face_from_image(pkg_file_path)
 
         # Produce the output images from the models
-        vangogh_model.set_model_input(face_selection)
-        produced_visuals = vangogh_model.run_inference()
+        ukiyoe_model.set_model_input(face_selection)
+        produced_visuals = ukiyoe_model.run_inference()
 
         # Save the output image
         np_img = tensor2im(produced_visuals['fake'])
